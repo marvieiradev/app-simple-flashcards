@@ -31,6 +31,10 @@ button {
     transition: all 0.3s ease;
 }
 
+#add-card {
+    margin-bottom: 20px;
+}
+
 .add-card-con button,
 .modal button {
     font-size: 15px;
@@ -40,7 +44,7 @@ button {
     border-radius: 10px;
 }
 
-.cards-list {
+.card-list {
     display: flex;
     flex-wrap: wrap;
     gap: 20px;

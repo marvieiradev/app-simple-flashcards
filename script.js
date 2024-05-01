@@ -31,7 +31,7 @@ closeBtn.addEventListener('click', () => {
 saveBtn.addEventListener('click', () => {
     //Salva o flashcard
     let tempQuestion = question.value.trim();
-    let tempAnswer = question.value.trim();
+    let tempAnswer = answer.value.trim();
     addQuestionModal.classList.add('hide');
     if (!tempQuestion || !tempAnswer) {
         //Mostra o erros se os campos ficarem em branco

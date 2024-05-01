@@ -67,7 +67,7 @@ function viewList() {
         div.innerHTML = `
         <p class="que-div">${flashcard.question}</p>
                 <p class="ans-div">${flashcard.answer}</p>
-                <button class="show-hide-btn">Mostar/Esconder</button>
+                <button class="show-hide-btn">Esconder</button>
                 <div class="btns-con">
                     <button class="edit">
                         <i class="fa-solid fa-pen-to-square"></i>
@@ -87,6 +87,12 @@ function viewList() {
         showHideBtn.addEventListener('click', () => {
             //Troca a visibilidade da resposta
             displayAns.classList.toggle('hide');
+
+            if (showHideBtn.innerText == "Esconder") {
+                showHideBtn.innerText = "Mostrar"
+            } else if (showHideBtn.innerText == "Mostrar") {
+                showHideBtn.innerText = "Esconder"
+            }
         });
 
         editBtn.addEventListener('click', () => {

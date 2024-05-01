@@ -32,6 +32,7 @@ saveBtn.addEventListener('click', () => {
     //Salva o flashcard
     let tempQuestion = question.value.trim();
     let tempAnswer = question.value.trim();
+    addQuestionModal.classList.add('hide');
     if (!tempQuestion || !tempAnswer) {
         //Mostra o erros se os campos ficarem em branco
         errosMessage.classList.remove('hide');
@@ -52,7 +53,6 @@ saveBtn.addEventListener('click', () => {
         question.value = "";
         answer = "";
         editBool = false;
-        addQuestionModal.classList.add('hide');
     }
 });
 
@@ -60,7 +60,78 @@ saveBtn.addEventListener('click', () => {
 function viewList() {
     const cardList = document.querySelector('.card-list');
     cardList.innerHTML = '';
+    flashcards = JSON.parse(localStorage.getItem('flashcards')) || [];
+    flashcards.forEach(flashcard => {
+        const div = document.createElement("div");
+        div.classList.add('card');
+        div.innerHTML = `
+        <p class="que-div">${flashcard.question}</p>
+                <p class="ans-div">${flashcard.answer}</p>
+                <button class="show-hide-btn">Mostar/Esconder</button>
+                <div class="btns-con">
+                    <button class="edit">
+                        <i class="fa-solid fa-pen-to-square"></i>
+                    </button>
+                    <button class="delete">
+                        <i class="fa-solid fa-trash"></i>
+                    </button>
+                </div>
+        `;
+
+        div.setAttribute('data-id', flashcard.id);
+        const displayAns = div.querySelector('.ans-div');
+        const showHideBtn = div.querySelector('.show-hide-btn');
+        const editBtn = div.querySelector('.edit');
+        const deleteBtn = div.querySelector('.delete');
+
+        showHideBtn.addEventListener('click', () => {
+            //Troca a visibilidade da resposta
+            displayAns.classList.toggle('hide');
+        });
+
+        editBtn.addEventListener('click', () => {
+            //Habilita o modo de edição para adicionar um flascard
+            editBool = true;
+            modifyElement(editBtn, true);
+            addQuestionModal.classList.remove('hide');
+        });
+
+        deleteBtn.addEventListener('click', () => {
+            //Deleta um flascard
+            modifyElement(editBtn);
+        });
+
+        cardList.appendChild(div);
+    });
 }
 
+//Função para modificar o flashcard
+const modifyElement = (element, edit = false) => {
+    const parentDiv = element.parentElement.parentElement;
+    const id = Number(parentDiv.getAttribute('data-id'));
+    const parentQuestion = parentDiv.querySelector('.que-div').innerText;
+    if (edit) {
+        const parentAnswer = parentDiv.querySelector('.ans-div').innerText;
+        answer.value = parentAnswer;
+        question.value = parentQuestion;
+        originalId = id;
+        disableBtns(true);
+    } else {
+        //Remove o flashcard do array e atualiza o armazenamento local
+        flashcards = flashcards.filter(flashcard =>
+            flashcard.id !== id);
+        localStorage.setItem('flashcards', JSON.stringify(flashcards));
+    }
+    parentDiv.remove();
+}
 
+//Funcção para desabilitar os botões de editar
+const disableBtns = (value) => {
+    const editButtons = document.getElementsByClassName('edit');
+    Array.from(editButtons).forEach((element) => {
+        element.disabled = value;
+    });
+}
 
+//Event listener para exibir a lista de flashcards ao acrregar a página
+document.addEventListener('DOMContentLoaded', viewList);

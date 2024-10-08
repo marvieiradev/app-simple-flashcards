@@ -11,3 +11,5 @@ Para utilizar basta clicar no botão "Add flashcards" e preencher os campos com 
 ## Informações
 
 Projeto desenvolvido utilizando apenas HTML, CSS e JavaScript.
+
+<img src="screenshot.png"/>
